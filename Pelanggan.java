@@ -1,16 +1,17 @@
+import java.util.*;
 public abstract class Pelanggan {
-    String firstName;
-    String lastName;
-    String address;
-    String phoneNumber;
+    protected String firstName;
+    protected String lastName;
+//    protected String address;
+//    protected String phoneNumber;
 
+    public Pelanggan(String firstName, String lastName) {
+        this.firstName = firstName;
+        this.lastName = lastName;
+    }
     abstract String getFullName();
 
-    Order makeOrder() {
-        return new Order();
-    }
+    abstract Order makeOrder(Date orderDate, int orderNumber, double subTotal, double shippingFee, double discount);
 
-    void confirmPay(int orderNumber) {
-        // implementasi konfirmasi pembayaran
-    }
+    abstract void confirmPay(int orderNumber);
 }
