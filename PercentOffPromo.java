@@ -1,13 +1,19 @@
 public class PercentOffPromo extends Promotion {
-    @Override
-    double calculateDiscount(Order order) {
-        // hitung diskon persentase
-        return 0;
-    }
+    double cashback;
+//    @Override
+//    double calculateDiscount(Order order) {
+//        // hitung diskon persentase
+//        return 0;
+//    }
 
     @Override
     public int compareTo(Promotion o) {
         return 0;
+    }
+
+    @Override
+    public String getPromoCode() {
+        return this.promoCode;
     }
 
     @Override
