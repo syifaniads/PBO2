@@ -1,13 +1,18 @@
 class CashbackPromo extends Promotion {
-    @Override
-    double calculateDiscount(Order order) {
-        // hitung cashback
-        return 0;
-    }
+//    @Override
+//    double calculateDiscount(Order order) {
+//        // hitung cashback
+//        return 0;
+//    }
 
     @Override
     public int compareTo(Promotion o) {
         return 0;
+    }
+
+    @Override
+    public String getPromoCode() {
+        return this.promoCode;
     }
 
     @Override
