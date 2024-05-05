@@ -19,7 +19,7 @@ public class Order {
 //                this.vehicle = vehicle;
 //                this.quantity = quantity;
         }
-        
+
         // class Pelanggan harus diisi dari constructor
         public void checkOut() {
             if(status == Status.UNPAID){
@@ -63,7 +63,7 @@ public class Order {
         public void pay() {
             if(status == Status.SUCCESSFUL){
                     System.out.println("Pembayaran berhasil.");
-                    status = Status.PAID;
+                    status = Status.SUCCESSFUL;
             }
             else {
                     System.out.println("Pesanan belum dibayar.");
