@@ -1,13 +1,19 @@
 public class FreeShippingPromo extends Promotion {
-    @Override
-    double calculateDiscount(Order order) {
-        // hitung potongan ongkos kirim
-        return 0;
-    }
+    double shippingFeeDiscount;
+//    @Override
+//    double calculateDiscount(Order order) {
+//        // hitung potongan ongkos kirim
+//        return 0;
+//    }
 
     @Override
     public int compareTo(Promotion o) {
         return 0;
+    }
+
+    @Override
+    public String getPromoCode() {
+        return this.promoCode;
     }
 
     @Override
