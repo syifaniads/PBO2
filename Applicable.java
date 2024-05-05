@@ -1,4 +1,5 @@
 interface Applicable {
+    String getPromoCode();
     boolean isCustomerEligible(Pelanggan customer);
     boolean isMinimumPriceEligible(Order order);
     boolean isShippingFeeEligible(Order order);
