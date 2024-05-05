@@ -1,6 +1,8 @@
 public abstract class Pelanggan {
     String firstName;
     String lastName;
+    String address;
+    String phoneNumber;
 
     abstract String getFullName();
 
