@@ -1,3 +1,5 @@
+import java.util.Date;
+
 abstract class Promotion implements Applicable, Comparable<Promotion> {
     String promoCode;
     Date startDate;
