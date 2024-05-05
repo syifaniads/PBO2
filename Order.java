@@ -41,7 +41,7 @@ public class Order {
                 System.out.println("   - Diskon: " + discount);
                 System.out.println("   - Total: " + total);
                 if (promotion != null) {
-//                        System.out.println("Promosi: " + promotion.getPromoCode());
+                        System.out.println("Promosi: " + promotion.getPromoCode());
                 }
                 else {
                         System.out.println("Promosi: Tidak ada");
@@ -51,7 +51,7 @@ public class Order {
         public void applyPromo(Promotion promo) {
                 this.promotion = promo;
                 try {
-                        this.discount = promo.calculateDiscount(this);
+                        this.discount = promo.calculateTotalDiscount(this);
                         this.total = subTotal + shippingFee - discount;
                 }
                 catch (Exception e){
