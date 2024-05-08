@@ -42,17 +42,4 @@ public class AutoMobile {
         }
     }
 }
-        return noPlat;
-    }
-
-    public void availablekursi() {
-        int row = (kuantitas - 1) / 3;
-        System.out.println("| " + (kursi[0][0] ? 1 : 0) + " |");
-        for (int i = 1; i <= row; i++) {
-            for (int j = 0; j < 3; j++) {
-                System.out.printf("| %s |", (kursi[i][j] ? 1 : 0));
-            }
-            System.out.println();
-        }
-    }
-}
+        
