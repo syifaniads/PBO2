@@ -9,9 +9,8 @@ public class Order {
         Status status;
         Promotion promotion;
 
-        public Order(Date orderDate, int orderNumber, double subTotal, double shippingFee, double discount) {
+        public Order(Date orderDate, double subTotal, double shippingFee, double discount) {
                 this.orderDate = orderDate;
-                this.orderNumber = orderNumber;
                 this.subTotal = subTotal;
                 this.shippingFee = shippingFee;
                 this.discount = discount;
