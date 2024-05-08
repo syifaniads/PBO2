@@ -1,20 +1,22 @@
-import java.util.*;
+import java.time.LocalDate;
+import java.util.Date;
 
-class Member extends Pelanggan {
-    private Date membershipDate;
+class Member extends Costumer {
+    private LocalDate membershipDate;
 
-    public Member(String firstName, String lastName, Date membershipDate) {
+    public Member(String firstName, String lastName, LocalDate membershipDate) {
         super(firstName, lastName);
         this.membershipDate = membershipDate;
     }
+
     @Override
-    String getFullName() {
+    public String getFullName() {
         return firstName + " " + lastName;
     }
 
     @Override
-    Order makeOrder(Date orderDate, int orderNumber, double subTotal, double shippingFee, double discount) {
-        return new Order(orderDate, orderNumber, subTotal, shippingFee, discount);
+    public Order makeOrder(Date orderDate, double subTotal, double shippingFee, double discount) {
+        return new Order(orderDate, subTotal, shippingFee, discount);
     }
 
     @Override
@@ -23,9 +25,7 @@ class Member extends Pelanggan {
     }
 
     public long getMembershipDuration() {
-        Date today = new Date();
-        long diffInMillies = Math.abs(today.getTime() - membershipDate.getTime());
-        return diffInMillies / (1000 * 60 * 60 * 24); // Konversi dari milisecond ke hari
+        LocalDate today = LocalDate.now();
+        return membershipDate.until(today).getDays();
     }
-
 }
