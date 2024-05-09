@@ -15,8 +15,8 @@ class Member extends Customer {
     }
 
     @Override
-    public Order makeOrder(LocalDate orderDate, double subTotal, double shippingFee, double discount, double total) {
-        return new Order(orderDate, subTotal, shippingFee, discount, total);
+    public Order makeOrder(LocalDate orderDate, LocalDate endDate, double subTotal, double shippingFee, double discount, double total) {
+        return new Order(orderDate, endDate, subTotal, shippingFee, discount, total);
     }
 
     @Override
