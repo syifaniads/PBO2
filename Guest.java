@@ -18,6 +18,6 @@ class Guest extends Customer {
 
     @Override
     void confirmPay(int orderNumber) {
-        System.out.println("Konfirmasi pembayaran pesanan " + orderNumber + " sebagai guest.");
+        System.out.println("Confirmation of payment for order " + orderNumber + " as a guest.");
     }
 }
