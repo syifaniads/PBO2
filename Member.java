@@ -21,7 +21,7 @@ class Member extends Customer {
 
     @Override
     void confirmPay(int orderNumber) {
-        System.out.println("Konfirmasi pembayaran pesanan " + orderNumber + " oleh member " + getFullName());
+        System.out.println("Confirmation of payment for order " + orderNumber + " by " + getFullName());
     }
 
     public long getMembershipDuration() {
