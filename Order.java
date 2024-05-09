@@ -1,6 +1,7 @@
+import java.time.LocalDate;
 import java.util.*;
 public class Order {
-        Date orderDate;
+        LocalDate orderDate;
         int orderNumber;
         double subTotal;
         double shippingFee;
@@ -9,8 +10,9 @@ public class Order {
         Status status;
         Promotion promotion;
 
-        public Order(Date orderDate, double subTotal, double shippingFee, double discount) {
+        public Order(LocalDate orderDate, double subTotal, double shippingFee, double discount) {
                 this.orderDate = orderDate;
+//                this.orderNumber = orderNumber;
                 this.subTotal = subTotal;
                 this.shippingFee = shippingFee;
                 this.discount = discount;
@@ -30,13 +32,13 @@ public class Order {
         }
 
         public void printDetails() {
-                System.out.println("Tanggal Pesanan: " + orderDate);
-                System.out.println("Nomor Pesanan: " + orderNumber);
-                System.out.println("Pesanan:");
+                System.out.println("Order Date: " + orderDate);
+                System.out.println("Order Number: " + orderNumber);
+                System.out.println("Order:");
 //                System.out.println("   - Kendaraan: " + vehicle.getType());
 //                System.out.println("   - Kuantitas: " + quantity);
                 System.out.println("   - Sub Total: " + subTotal);
-                System.out.println("   - Ongkos Kirim: " + shippingFee);
+                System.out.println("   - Fee Shipping: " + shippingFee);
                 System.out.println("   - Diskon: " + discount);
                 System.out.println("   - Total: " + total);
                 if (promotion != null) {
@@ -47,7 +49,7 @@ public class Order {
                 }
         }
 
-        public void applyPromo(Promotion promo) {
+        public double applyPromo(Promotion promo) {
                 this.promotion = promo;
                 try {
                         this.discount = promo.calculateTotalDiscount(this);
@@ -57,6 +59,7 @@ public class Order {
                         System.out.println("Gagal menggunakan promosi.");
                         e.printStackTrace();
                 }
+                return 0;
         }
 
         public void pay() {
