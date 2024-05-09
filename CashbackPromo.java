@@ -16,7 +16,7 @@ class CashbackPromo extends Promotion {
     }
 
     @Override
-    public boolean isCustomerEligible(Pelanggan customer) {
+    public boolean isCustomerEligible(Customer customer) {
         return false;
     }
 
