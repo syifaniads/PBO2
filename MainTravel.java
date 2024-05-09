@@ -39,29 +39,65 @@ public class MainTravel {
                         System.out.println("Car list: ");
                         AutoMobile mobil = new AutoMobile("Mobil", "N 1234 AAA", 5, true);
                         System.out.println("Car: " + mobil.getBrand() + "\nNumber Plate: " + mobil.getNumberPlat());
+                        System.out.println("Available chair:");
+                        mobil.displayAvailableChairs();
+                        mobil.setChairs();
+
+                        System.out.println("Choose a chair");
+                        System.out.print("Row: ");
+                        int row = scanner.nextInt();
+                        System.out.print("Column: ");
+                        int column = scanner.nextInt();
+                        scanner.nextLine();
+                        if (mobil.isSeatAvailable(row, column)) {
+                            mobil.bookSeat(row, column);
+                            System.out.println("Kursi " + row + " " + column + " berhasil dipesan.");
+                        } else {
+                            System.out.println("Kursi " + row + " " + column + " sudah dipesan atau tidak valid.");
+                        }
+
                         System.out.print("Input pick up address: ");
                         String pickUpAddress = scanner.nextLine();
                         System.out.println("=".repeat(52));
                         System.out.println("Customer's name: " + pelanggan.getFullName());
                         System.out.println("Pick up address: " + pickUpAddress);
                         System.out.println("Car: " + mobil.getBrand() + "\nNumber Plate: " + mobil.getNumberPlat());
+                        System.out.println("Chair: " + row + " " + column);
                     }
                     else if(pilihan3 == 2){
+                        AutoMobile mobil1 = new AutoMobile("Mobil", "N 1234 AAA", 5, true);
                         System.out.println("Choose your destination");
                         System.out.println("1. Surabaya");
                         System.out.println("2. Jogja");
                         System.out.println("3. Bali");
                         System.out.println("4. Solo");
-                        System.out.println("Input your destination: ");
+                        System.out.print("Input your destination: ");
                         String destination = scanner.nextLine();
+
+                        System.out.println("Available chair:");
+                        mobil1.displayAvailableChairs();
+                        mobil1.setChairs();
+                        System.out.println("Choose a chair");
+                        System.out.print("Row: ");
+                        int row = scanner.nextInt();
+                        System.out.print("Column: ");
+                        int column = scanner.nextInt();
+                        scanner.nextLine();
+                        if (mobil1.isSeatAvailable(row, column)) {
+                            mobil1.bookSeat(row, column);
+                            System.out.println("Kursi " + row + " " + column + " berhasil dipesan.");
+                        } else {
+                            System.out.println("Kursi " + row + " " + column + " sudah dipesan atau tidak valid.");
+                        }
+
                         System.out.print("Input pick up address: ");
                         String pickUpAddress = scanner.nextLine();
                         System.out.println("=".repeat(52));
                         System.out.println("Customer's name: " + pelanggan.getFullName());
                         System.out.println("Destination: " + destination);
                         System.out.println("Pick up address: " + pickUpAddress);
-                        AutoMobile mobil1 = new AutoMobile("Mobil", "N 1234 AAA", 5, true);
                         System.out.println("Car: " + mobil1.getBrand() + "\nNumber Plat: " + mobil1.getNumberPlat());
+                        System.out.println("Chair: " + row + " " + column);
                     }
                 } else {
                     System.out.println("Thank you!");
@@ -92,30 +128,64 @@ public class MainTravel {
                     scanner.nextLine(); // consume newline
                     if (pilihan6 == 1) {
                         System.out.println("Car List:  ");
-                        AutoMobile mobil = new AutoMobile("Mobil", "N 1234 AAA", 5, true);
+                        AutoMobile mobil2 = new AutoMobile("Mobil", "N 1234 AAA", 5, true);
+                        System.out.println("Available chair:");
+                        mobil2.displayAvailableChairs();
+                        mobil2.setChairs();
+                        System.out.println("Choose a chair");
+                        System.out.print("Row: ");
+                        int row = scanner.nextInt();
+                        System.out.print("Column: ");
+                        int column = scanner.nextInt();
+                        scanner.nextLine();
+                        if (mobil2.isSeatAvailable(row, column)) {
+                            mobil2.bookSeat(row, column);
+                            System.out.println("Kursi " + row + " " + column + " berhasil dipesan.");
+                        } else {
+                            System.out.println("Kursi " + row + " " + column + " sudah dipesan atau tidak valid.");
+                        }
                         System.out.print("Input pick up address: ");
                         String pickUpAddress = scanner.nextLine();
                         System.out.println("=".repeat(52));
                         System.out.println("Customer's name: " + tamu.getFullName());
                         System.out.println("Pick up address: " + pickUpAddress);
-                        System.out.println("Car: " + mobil.getBrand() + "\nNumber Plate: " + mobil.getNumberPlat());
+                        System.out.println("Car: " + mobil2.getBrand() + "\nNumber Plate: " + mobil2.getNumberPlat());
+                        System.out.println("Chair: " + row + " " + column);
                     }
                     else if(pilihan6 == 2){
+                        AutoMobile mobil3 = new AutoMobile("Mobil", "N 1234 AAA", 5, true);
                         System.out.println("Choose your destination");
                         System.out.println("1. Surabaya");
                         System.out.println("2. Jogja");
                         System.out.println("3. Bali");
                         System.out.println("4. Solo");
-                        System.out.println("Input your destination: ");
+                        System.out.print("Input your destination: ");
                         String destination1 = scanner.nextLine();
+
+                        System.out.println("Available chair:");
+                        mobil3.displayAvailableChairs();
+                        mobil3.setChairs();
+                        System.out.println("Choose a chair");
+                        System.out.print("Row: ");
+                        int row = scanner.nextInt();
+                        System.out.print("Column: ");
+                        int column = scanner.nextInt();
+                        scanner.nextLine();
+                        if (mobil3.isSeatAvailable(row, column)) {
+                            mobil3.bookSeat(row, column);
+                            System.out.println("Kursi " + row + " " + column + " berhasil dipesan.");
+                        } else {
+                            System.out.println("Kursi " + row + " " + column + " sudah dipesan atau tidak valid.");
+                        }
+
                         System.out.print("Input pick up address: ");
                         String pickUpAddress = scanner.nextLine();
                         System.out.println("=".repeat(52));
                         System.out.println("Customer's name: " + tamu.getFullName());
                         System.out.println("Destination: " + destination1);
                         System.out.println("Pick up address: " + pickUpAddress);
-                        AutoMobile mobil1 = new AutoMobile("Mobil", "N 1234 AAA", 5, true);
-                        System.out.println("Car: " + mobil1.getBrand() + "\nNumber Plat: " + mobil1.getNumberPlat());
+                        System.out.println("Car: " + mobil3.getBrand() + "\nNumber Plat: " + mobil3.getNumberPlat());
+                        System.out.println("Chair: " + row + " " + column);
                     }
                 } else {
                     System.out.println("Thank you!");
