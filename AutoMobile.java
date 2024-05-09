@@ -4,14 +4,21 @@ public class AutoMobile {
     private boolean airConditioner;
     private int quantity;
     private boolean[][] chairs;
+    private double price;
 
-    public AutoMobile(String brand, String numberPlat, int quantity, boolean airConditioner) {
+    public AutoMobile(String brand, String numberPlat, int quantity, boolean airConditioner, double price) {
         this.brand = brand;
         this.numberPlat = numberPlat;
         this.quantity = quantity;
         this.airConditioner = airConditioner;
+        this.price = price;
         setChairs();
     }
+
+    public double getPrice() {
+        return price;
+    }
+
     public String getBrand() {
         return brand;
     }
