@@ -39,9 +39,12 @@ public class MainTravel {
                     if (pilihan3 == 1) {
                         System.out.print("Rent date (yyyy-MM-dd): ");
                         LocalDate rentDateMember = LocalDate.parse(scanner.nextLine());
+                        System.out.print("Rental end date (yyyy-MM-dd): ");
+                        LocalDate endDateMember = LocalDate.parse(scanner.nextLine());
                         System.out.println("Car list: ");
                         AutoMobile mobil = new AutoMobile("Avanza", "N 1234 AAA", 5, true, 800000);
                         System.out.println("Car: " + mobil.getBrand() + "\nLicense Plate: " + mobil.getNumberPlat());
+
                         System.out.println("Available chair:");
                         mobil.displayAvailableChairs();
                         mobil.setChairs();
@@ -82,8 +85,11 @@ public class MainTravel {
                             else if(inputRange >=11 && inputRange <=20){
                                 shipFeeMember = 25000;
                             }
+                            else if(inputRange >= 30){
+                                shipFeeMember = 50000;
+                            }
                             else{
-                                shipFeeMember = 500000;
+                                shipFeeMember = 0;
                             }
                         }
                         else {
@@ -94,16 +100,19 @@ public class MainTravel {
                             // Jika member memenuhi syarat untuk diskon 20%
                             // Lakukan pengurangan 20% dari total pembayaran
 
-                            discountMember += subTotalMember * 0.20;
+                            discountMember = subTotalMember * 0.20;
 //                            subTotalMember -= discountMember;
                             System.out.println("Member eligible for 20% discount!");
+                        }
+                        else {
+                            discountMember = 0;
                         }
                         double totalRentMember = 0;
                         PercentOffPromo percentOffPromo = new PercentOffPromo();
                         CashbackPromo cashbackPromo = new CashbackPromo();
                         FreeShippingPromo freeShippingPromo = new FreeShippingPromo();
 //                        double discountMember = percentOffPromo() + cashbackPromo() + freeShippingPromo();
-                        Order order = new Order(rentDateMember, subTotalMember, shipFeeMember, discountMember, totalRentMember);
+                        Order order = new Order(rentDateMember, endDateMember, subTotalMember, shipFeeMember, discountMember, totalRentMember);
 
                         // nota
                         System.out.println("=".repeat(52));
@@ -134,6 +143,8 @@ public class MainTravel {
                         double shipFeeTravel1;
                         System.out.print("Rent date (yyyy-MM-dd): ");
                         LocalDate rentDateMember = LocalDate.parse(scanner.nextLine());
+                        System.out.print("Rental end date (yyyy-MM-dd): ");
+                        LocalDate endDateMember = LocalDate.parse(scanner.nextLine());
                         System.out.println("Choose your destination");
                         System.out.println("1. Surabaya");
                         System.out.println("2. Jogja");
@@ -159,8 +170,11 @@ public class MainTravel {
                             else if(inputRange >=11 && inputRange <=20){
                                 shipFeeTravel1 = 25000;
                             }
-                            else{
+                            else if(inputRange>= 30){
                                 shipFeeTravel1= 500000;
+                            }
+                            else{
+                                shipFeeTravel1 = 0;
                             }
                         }
                         else {
@@ -204,8 +218,11 @@ public class MainTravel {
 //                            subTotalTravel1 -= discountTravel1;
                             System.out.println("Member eligible for 20% discount!");
                         }
+                        else{
+                            discountTravel1 = 0;
+                        }
                         double totalTravel1=0;
-                        Order order = new Order(rentDateMember, subTotalTravel1, shipFeeTravel1, discountTravel1, totalTravel1);
+                        Order order = new Order(rentDateMember, endDateMember, subTotalTravel1, shipFeeTravel1, discountTravel1, totalTravel1);
                         System.out.println("=".repeat(52));
                         System.out.println("Customer's name: " + pelanggan.getFullName());
                         System.out.println("Destination: " + destination);
@@ -248,6 +265,8 @@ public class MainTravel {
                     if (pilihan6 == 1) {
                         System.out.print("Rent date (yyyy-MM-dd): ");
                         LocalDate rentDateGuest = LocalDate.parse(scanner.nextLine());
+                        System.out.print("Rental end date (yyyy-MM-dd): ");
+                        LocalDate endDateGuest = LocalDate.parse(scanner.nextLine());
                         System.out.println("Car List:  ");
                         AutoMobile mobil2 = new AutoMobile("Avanza", "N 1234 AAA", 5, true, 800000);
                         System.out.println("Available chair:");
@@ -289,14 +308,17 @@ public class MainTravel {
                             else if(inputRange >=11 && inputRange <=20){
                                 shipFeeGuest = 25000;
                             }
-                            else{
+                            else if(inputRange >= 30){
                                 shipFeeGuest = 500000;
+                            }
+                            else{
+                                shipFeeGuest =0;
                             }
                         }
                         else {
                             shipFeeGuest = 0;
                         }
-                        Order order = new Order(rentDateGuest, subTotalGuest, shipFeeGuest, discountGuest, totalRentGuest);
+                        Order order = new Order(rentDateGuest, endDateGuest, subTotalGuest, shipFeeGuest, discountGuest, totalRentGuest);
                         System.out.println("=".repeat(52));
                         System.out.println("Customer's name: " + tamu.getFullName());
                         System.out.println("Pick up address: " + pickUpAddress);
@@ -313,6 +335,8 @@ public class MainTravel {
                         AutoMobile mobil3 = new AutoMobile("Avanza", "N 1234 AAA", 5, true, 800000);
                         System.out.println("Rent date (yyyy-MM-dd): ");
                         LocalDate rentDateGuest = LocalDate.parse(scanner.nextLine());
+                        System.out.print("Rental end date (yyyy-MM-dd): ");
+                        LocalDate endDateGuest = LocalDate.parse(scanner.nextLine());
                         System.out.println("Choose your destination");
                         System.out.println("1. Surabaya");
                         System.out.println("2. Jogja");
@@ -338,8 +362,11 @@ public class MainTravel {
                             else if(inputRange >=11 && inputRange <=20){
                                 shippingFeeTravel2 = 25000;
                             }
-                            else{
+                            else if(inputRange >= 30){
                                 shippingFeeTravel2= 500000;
+                            }
+                            else{
+                                shippingFeeTravel2 = 0;
                             }
                         }
                         else {
@@ -381,7 +408,7 @@ public class MainTravel {
                         double discountGuest = 0;
                         double totalGuest = subTotalGuest + subTotalTravel2;
                         double totalTravel2 = 0;
-                        Order order = new Order(rentDateGuest, totalGuest, shippingFeeTravel2, discountGuest, totalTravel2);
+                        Order order = new Order(rentDateGuest, endDateGuest, totalGuest, shippingFeeTravel2, discountGuest, totalTravel2);
                         System.out.println("=".repeat(52));
                         System.out.println("Customer's name: " + tamu.getFullName());
                         System.out.println("Destination: " + destination1);
