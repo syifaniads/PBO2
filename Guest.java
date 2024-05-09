@@ -1,6 +1,7 @@
+import java.time.LocalDate;
 import java.util.Date;
 
-class Guest extends Costumer {
+class Guest extends Customer {
 
     public Guest(String firstName, String lastName) {
         super(firstName, lastName);
@@ -11,7 +12,7 @@ class Guest extends Costumer {
     }
 
     @Override
-    Order makeOrder(Date orderDate, double subTotal, double shippingFee, double discount) {
+    Order makeOrder(LocalDate orderDate, double subTotal, double shippingFee, double discount) {
         return new Order(orderDate, subTotal, shippingFee, discount);
     }
 
@@ -20,4 +21,3 @@ class Guest extends Costumer {
         System.out.println("Konfirmasi pembayaran pesanan " + orderNumber + " sebagai guest.");
     }
 }
-
