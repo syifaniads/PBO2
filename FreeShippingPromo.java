@@ -17,7 +17,7 @@ public class FreeShippingPromo extends Promotion {
     }
 
     @Override
-    public boolean isCustomerEligible(Pelanggan customer) {
+    public boolean isCustomerEligible(Customer customer) {
         return false;
     }
 
@@ -33,7 +33,8 @@ public class FreeShippingPromo extends Promotion {
 
     @Override
     public double calculateTotalDiscount(Order order) throws Exception {
-        return 0;
+        double totalDiscount = order.shippingFee - shippingFeeDiscount ;
+        return totalDiscount;
     }
 
     @Override
