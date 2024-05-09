@@ -2,6 +2,7 @@ import java.time.LocalDate;
 import java.util.*;
 public class Order {
         LocalDate orderDate;
+        LocalDate endDate;
         int orderNumber;
         double subTotal;
         double shippingFee;
@@ -10,8 +11,9 @@ public class Order {
         Status status;
         Promotion promotion;
 
-        public Order(LocalDate orderDate, double subTotal, double shippingFee, double discount,double total) {
+        public Order(LocalDate orderDate, LocalDate endDate, double subTotal, double shippingFee, double discount, double total) {
                 this.orderDate = orderDate;
+                this.endDate = endDate;
 //                this.orderNumber = orderNumber;
                 this.subTotal = subTotal;
                 this.shippingFee = shippingFee;
@@ -33,6 +35,7 @@ public class Order {
 
         public void printDetails() {
                 System.out.println("Order Date: " + orderDate);
+                System.out.println("Rental End Date: " + endDate);
                 System.out.println("Order Number: " + orderNumber);
                 System.out.println("Order:");
 //                System.out.println("   - Kendaraan: " + vehicle.getType());
