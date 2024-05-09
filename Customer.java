@@ -1,3 +1,4 @@
+import java.time.LocalDate;
 import java.util.*;
 public abstract class Customer {
     protected String firstName;
@@ -11,7 +12,7 @@ public abstract class Customer {
     }
     public abstract String getFullName();
 
-    abstract Order makeOrder(Date orderDate, double subTotal, double shippingFee, double discount);
+    abstract Order makeOrder(LocalDate orderDate, double subTotal, double shippingFee, double discount);
 
     abstract void confirmPay(int orderNumber);
 }
