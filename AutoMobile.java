@@ -32,7 +32,7 @@ public class AutoMobile {
         }
     }
 
-    private void setChairs() {
+    public void setChairs() {
         int rows = (quantity - 1) / 3 + 1;
         chairs = new boolean[rows][3];
         for (boolean[] row : chairs) {
@@ -41,5 +41,17 @@ public class AutoMobile {
             }
         }
     }
+
+    public boolean isSeatAvailable(int row, int column) {
+        if (row >= 0 && row < chairs.length && column >= 0 && column < chairs[row].length) {
+            return !chairs[row][column];
+        }
+        return false;
+    }
+
+    public void bookSeat(int row, int column) {
+        if (row >= 0 && row < chairs.length && column >= 0 && column < chairs[row].length) {
+            chairs[row][column] = true;
+        }
+    }
 }
-        
