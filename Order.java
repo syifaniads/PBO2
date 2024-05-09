@@ -27,7 +27,7 @@ public class Order {
                     status = Status.SUCCESSFUL;
             }
             else {
-                    System.out.println("Pesanan telah dibayar atau dibatalkan.");
+                    System.out.println("The order has been paid or cancelled.");
             }
         }
 
@@ -39,13 +39,13 @@ public class Order {
 //                System.out.println("   - Kuantitas: " + quantity);
                 System.out.println("   - Sub Total: " + subTotal);
                 System.out.println("   - Fee Shipping: " + shippingFee);
-                System.out.println("   - Diskon: " + discount);
+                System.out.println("   - Discount: " + discount);
                 System.out.println("   - Total: " + total);
                 if (promotion != null) {
-                        System.out.println("Promosi: " + promotion.getPromoCode());
+                        System.out.println("Promo: " + promotion.getPromoCode());
                 }
                 else {
-                        System.out.println("Promosi: Tidak ada");
+                        System.out.println("Promo: None");
                 }
         }
 
@@ -56,7 +56,7 @@ public class Order {
                         this.total = subTotal + shippingFee - discount;
                 }
                 catch (Exception e){
-                        System.out.println("Gagal menggunakan promosi.");
+                        System.out.println("Failed to use promo.");
                         e.printStackTrace();
                 }
                 return 0;
@@ -64,11 +64,11 @@ public class Order {
 
         public void pay() {
             if(status == Status.SUCCESSFUL){
-                    System.out.println("Pembayaran berhasil.");
+                    System.out.println("Payment successful.");
                     status = Status.SUCCESSFUL;
             }
             else {
-                    System.out.println("Pesanan belum dibayar.");
+                    System.out.println("Order has not been paid for.");
             }
         }
     }
