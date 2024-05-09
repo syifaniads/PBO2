@@ -21,6 +21,7 @@ public class MainTravel {
                 System.out.print("Input membership date (yyyy-MM-dd): ");
                 LocalDate membershipDate = LocalDate.parse(scanner.nextLine());
                 Member pelanggan = new Member(firstName, lastName, membershipDate);
+
                 System.out.println("=".repeat(52));
                 System.out.println("CONTINUE?");
                 System.out.println("[Type 1] Yes");
@@ -36,9 +37,11 @@ public class MainTravel {
                     int pilihan3 = scanner.nextInt();
                     scanner.nextLine(); // consume newline
                     if (pilihan3 == 1) {
+                        System.out.print("Rent date (yyyy-MM-dd): ");
+                        LocalDate rentDateMember = LocalDate.parse(scanner.nextLine());
                         System.out.println("Car list: ");
-                        AutoMobile mobil = new AutoMobile("Mobil", "N 1234 AAA", 5, true);
-                        System.out.println("Car: " + mobil.getBrand() + "\nNumber Plate: " + mobil.getNumberPlat());
+                        AutoMobile mobil = new AutoMobile("Avanza", "N 1234 AAA", 5, true, 800000);
+                        System.out.println("Car: " + mobil.getBrand() + "\nLicense Plate: " + mobil.getNumberPlat());
                         System.out.println("Available chair:");
                         mobil.displayAvailableChairs();
                         mobil.setChairs();
@@ -51,21 +54,86 @@ public class MainTravel {
                         scanner.nextLine();
                         if (mobil.isSeatAvailable(row, column)) {
                             mobil.bookSeat(row, column);
-                            System.out.println("Kursi " + row + " " + column + " berhasil dipesan.");
+                            System.out.println("Chair " + row + " " + column + " is successfully booked.");
                         } else {
-                            System.out.println("Kursi " + row + " " + column + " sudah dipesan atau tidak valid.");
+                            System.out.println("Chair " + row + " " + column + " is reserved or invalid.");
                         }
 
-                        System.out.print("Input pick up address: ");
+                        System.out.print("Input address: ");
                         String pickUpAddress = scanner.nextLine();
+                        double subTotalMember = mobil.getPrice();
+                        double shipFeeMember;
+                        double discountMember = 0;
+                        System.out.println("Choose your rental service: ");
+                        System.out.println("[Type 1] Deliver the car to your address");
+                        System.out.println("[Type 2] Pick up yourself");
+                        System.out.print("Enter option: ");
+                        int serviceOption = scanner.nextInt();
+                        if(serviceOption == 1){
+                            String[] rangeService= {" 5Km <= range <= 10Km: Rp 10000", " 11Km <= range <= 20Km: Rp 25000 ", "range >= 30Km: Rp 50000"};
+                            for (int i=0; i < rangeService.length; i++){
+                                System.out.println((i+1)+". "+ rangeService[i]);
+                            }
+                            System.out.print("Set a range (Km): ");
+                            int inputRange= scanner.nextInt();
+                            if (inputRange >= 5 && inputRange <= 10 ){
+                                shipFeeMember = 10000;
+                            }
+                            else if(inputRange >=11 && inputRange <=20){
+                                shipFeeMember = 25000;
+                            }
+                            else{
+                                shipFeeMember = 500000;
+                            }
+                        }
+                        else {
+                            shipFeeMember = 0;
+                        }
+                        if (pelanggan.isEligibleForDiscount()) {
+
+                            // Jika member memenuhi syarat untuk diskon 20%
+                            // Lakukan pengurangan 20% dari total pembayaran
+
+                            discountMember += subTotalMember * 0.20;
+//                            subTotalMember -= discountMember;
+                            System.out.println("Member eligible for 20% discount!");
+                        }
+                        double totalRentMember = 0;
+                        PercentOffPromo percentOffPromo = new PercentOffPromo();
+                        CashbackPromo cashbackPromo = new CashbackPromo();
+                        FreeShippingPromo freeShippingPromo = new FreeShippingPromo();
+//                        double discountMember = percentOffPromo() + cashbackPromo() + freeShippingPromo();
+                        Order order = new Order(rentDateMember, subTotalMember, shipFeeMember, discountMember, totalRentMember);
+
+                        // nota
                         System.out.println("=".repeat(52));
                         System.out.println("Customer's name: " + pelanggan.getFullName());
                         System.out.println("Pick up address: " + pickUpAddress);
-                        System.out.println("Car: " + mobil.getBrand() + "\nNumber Plate: " + mobil.getNumberPlat());
+                        System.out.println("Car: " + mobil.getBrand() + "\nLicense Plate: " + mobil.getNumberPlat());
                         System.out.println("Chair: " + row + " " + column);
+
+                        // Terapkan promosi ke dalam pesanan
+//                        order.applyPromo(percentOffPromo); // Terapkan promo diskon persentase
+//                        order.applyPromo(cashbackPromo); // Terapkan promo cashback
+//                        order.applyPromo(freeShippingPromo); // Terapkan promo gratis pengiriman
+                        order.printDetails();
+//                        try {
+//                            // Hitung total pembayaran setelah promosi
+//                            double totalPayment = order.applyPromo(cashbackPromo);
+//                            System.out.println("Total payment after promotion: " + totalPayment);
+//                        } catch (Exception e) {
+//                            System.out.println("Failed to calculate the total payment: " + e.getMessage());
+//                        }
+                        System.out.println("=".repeat(52));
+                        order.checkOut();
+                        pelanggan.confirmPay(order.orderNumber);
+                        order.pay();
                     }
                     else if(pilihan3 == 2){
-                        AutoMobile mobil1 = new AutoMobile("Mobil", "N 1234 AAA", 5, true);
+                        AutoMobile mobil1 = new AutoMobile("Avanza", "N 1234 AAA", 5, true, 800000);
+                        double shipFeeTravel1;
+                        System.out.print("Rent date (yyyy-MM-dd): ");
+                        LocalDate rentDateMember = LocalDate.parse(scanner.nextLine());
                         System.out.println("Choose your destination");
                         System.out.println("1. Surabaya");
                         System.out.println("2. Jogja");
@@ -73,6 +141,31 @@ public class MainTravel {
                         System.out.println("4. Solo");
                         System.out.print("Input your destination: ");
                         String destination = scanner.nextLine();
+                        System.out.println("Choose your rental service: ");
+                        System.out.println("[Type 1] We pick you up");
+                        System.out.println("[Type 2] Come to the meeting place");
+                        System.out.print("Enter option: ");
+                        int serviceOption = scanner.nextInt();
+                        if(serviceOption == 1){
+                            String[] rangeService= {" 5Km <= range <= 10Km: Rp 10000", " 11Km <= range <= 20Km: Rp 25000 ", "range >= 30Km: Rp 50000"};
+                            for (int i=0; i < rangeService.length; i++){
+                                System.out.println((i+1)+". "+ rangeService[i]);
+                            }
+                            System.out.print("Set a range (Km): ");
+                            int inputRange= scanner.nextInt();
+                            if (inputRange >= 5 && inputRange <= 10 ){
+                                shipFeeTravel1 = 10000;
+                            }
+                            else if(inputRange >=11 && inputRange <=20){
+                                shipFeeTravel1 = 25000;
+                            }
+                            else{
+                                shipFeeTravel1= 500000;
+                            }
+                        }
+                        else {
+                            shipFeeTravel1 = 0;
+                        }
 
                         System.out.println("Available chair:");
                         mobil1.displayAvailableChairs();
@@ -85,19 +178,45 @@ public class MainTravel {
                         scanner.nextLine();
                         if (mobil1.isSeatAvailable(row, column)) {
                             mobil1.bookSeat(row, column);
-                            System.out.println("Kursi " + row + " " + column + " berhasil dipesan.");
+                            System.out.println("Chair " + row + " " + column + " is successfully booked.");
                         } else {
-                            System.out.println("Kursi " + row + " " + column + " sudah dipesan atau tidak valid.");
+                            System.out.println("Chair " + row + " " + column + " is reserved or invalid.");
                         }
 
                         System.out.print("Input pick up address: ");
                         String pickUpAddress = scanner.nextLine();
+                        double subTotalTravel1;
+                        if(destination.equals("Surabaya")){
+                            subTotalTravel1 = 150000;
+                        } else if (destination.equals("Jogja")) {
+                            subTotalTravel1 = 250000;
+                        } else if (destination.equals("Bali")) {
+                            subTotalTravel1 = 600000;
+                        } else if (destination.equals("Solo")) {
+                            subTotalTravel1 = 230000;
+                        }
+                        else{
+                            subTotalTravel1 = 0;
+                        }
+                        double discountTravel1 = 0;
+                        if (pelanggan.isEligibleForDiscount()) {
+                            discountTravel1 += subTotalTravel1 * 0.20;
+//                            subTotalTravel1 -= discountTravel1;
+                            System.out.println("Member eligible for 20% discount!");
+                        }
+                        double totalTravel1=0;
+                        Order order = new Order(rentDateMember, subTotalTravel1, shipFeeTravel1, discountTravel1, totalTravel1);
                         System.out.println("=".repeat(52));
                         System.out.println("Customer's name: " + pelanggan.getFullName());
                         System.out.println("Destination: " + destination);
                         System.out.println("Pick up address: " + pickUpAddress);
-                        System.out.println("Car: " + mobil1.getBrand() + "\nNumber Plat: " + mobil1.getNumberPlat());
+                        System.out.println("Car: " + mobil1.getBrand() + "\nLicense Plate: " + mobil1.getNumberPlat());
                         System.out.println("Chair: " + row + " " + column);
+                        order.printDetails();
+                        System.out.println("=".repeat(52));
+                        order.checkOut();
+                        pelanggan.confirmPay(order.orderNumber);
+                        order.pay();
                     }
                 } else {
                     System.out.println("Thank you!");
@@ -127,8 +246,10 @@ public class MainTravel {
                     int pilihan6 = scanner.nextInt();
                     scanner.nextLine(); // consume newline
                     if (pilihan6 == 1) {
+                        System.out.print("Rent date (yyyy-MM-dd): ");
+                        LocalDate rentDateGuest = LocalDate.parse(scanner.nextLine());
                         System.out.println("Car List:  ");
-                        AutoMobile mobil2 = new AutoMobile("Mobil", "N 1234 AAA", 5, true);
+                        AutoMobile mobil2 = new AutoMobile("Avanza", "N 1234 AAA", 5, true, 800000);
                         System.out.println("Available chair:");
                         mobil2.displayAvailableChairs();
                         mobil2.setChairs();
@@ -140,20 +261,58 @@ public class MainTravel {
                         scanner.nextLine();
                         if (mobil2.isSeatAvailable(row, column)) {
                             mobil2.bookSeat(row, column);
-                            System.out.println("Kursi " + row + " " + column + " berhasil dipesan.");
+                            System.out.println("Chair " + row + " " + column + " is successfully booked.");
                         } else {
-                            System.out.println("Kursi " + row + " " + column + " sudah dipesan atau tidak valid.");
+                            System.out.println("Chair " + row + " " + column + " is reserved or invalid.");
                         }
-                        System.out.print("Input pick up address: ");
+                        System.out.print("Input address: ");
                         String pickUpAddress = scanner.nextLine();
+                        double subTotalGuest = mobil2.getPrice();
+                        double shipFeeGuest;
+                        double discountGuest = 0;
+                        double totalRentGuest = 0;
+                        System.out.println("Choose your rental service: ");
+                        System.out.println("[Type 1] Deliver the car to your address");
+                        System.out.println("[Type 2] Pick up yourself");
+                        System.out.print("Enter option: ");
+                        int serviceOption = scanner.nextInt();
+                        if(serviceOption == 1){
+                            String[] rangeService= {" 5Km <= range <= 10Km: Rp 10000", " 11Km <= range <= 20Km: Rp 25000 ", "range >= 30Km: Rp 50000"};
+                            for (int i=0; i < rangeService.length; i++){
+                                System.out.println((i+1)+". "+ rangeService[i]);
+                            }
+                            System.out.print("Set a range (Km): ");
+                            int inputRange= scanner.nextInt();
+                            if (inputRange >= 5 && inputRange <= 10 ){
+                                shipFeeGuest = 10000;
+                            }
+                            else if(inputRange >=11 && inputRange <=20){
+                                shipFeeGuest = 25000;
+                            }
+                            else{
+                                shipFeeGuest = 500000;
+                            }
+                        }
+                        else {
+                            shipFeeGuest = 0;
+                        }
+                        Order order = new Order(rentDateGuest, subTotalGuest, shipFeeGuest, discountGuest, totalRentGuest);
                         System.out.println("=".repeat(52));
                         System.out.println("Customer's name: " + tamu.getFullName());
                         System.out.println("Pick up address: " + pickUpAddress);
-                        System.out.println("Car: " + mobil2.getBrand() + "\nNumber Plate: " + mobil2.getNumberPlat());
+                        System.out.println("Car: " + mobil2.getBrand() + "\nLicense Plate: " + mobil2.getNumberPlat());
                         System.out.println("Chair: " + row + " " + column);
+                        order.printDetails();
+                        System.out.println("=".repeat(52));
+                        order.checkOut();
+                        tamu.confirmPay(order.orderNumber);
+                        order.pay();
                     }
                     else if(pilihan6 == 2){
-                        AutoMobile mobil3 = new AutoMobile("Mobil", "N 1234 AAA", 5, true);
+                        double shippingFeeTravel2;
+                        AutoMobile mobil3 = new AutoMobile("Avanza", "N 1234 AAA", 5, true, 800000);
+                        System.out.println("Rent date (yyyy-MM-dd): ");
+                        LocalDate rentDateGuest = LocalDate.parse(scanner.nextLine());
                         System.out.println("Choose your destination");
                         System.out.println("1. Surabaya");
                         System.out.println("2. Jogja");
@@ -161,6 +320,31 @@ public class MainTravel {
                         System.out.println("4. Solo");
                         System.out.print("Input your destination: ");
                         String destination1 = scanner.nextLine();
+                        System.out.println("Choose your rental service: ");
+                        System.out.println("[Type 1] We pick you up");
+                        System.out.println("[Type 2] Come to the meeting place");
+                        System.out.print("Enter option: ");
+                        int serviceOption = scanner.nextInt();
+                        if(serviceOption == 1){
+                            String[] rangeService= {" 5Km <= range <= 10Km: Rp 10000", " 11Km <= range <= 20Km: Rp 25000 ", "range >= 30Km: Rp 50000"};
+                            for (int i=0; i < rangeService.length; i++){
+                                System.out.println((i+1)+". "+ rangeService[i]);
+                            }
+                            System.out.print("Set a range (Km): ");
+                            int inputRange= scanner.nextInt();
+                            if (inputRange >= 5 && inputRange <= 10 ){
+                                shippingFeeTravel2 = 10000;
+                            }
+                            else if(inputRange >=11 && inputRange <=20){
+                                shippingFeeTravel2 = 25000;
+                            }
+                            else{
+                                shippingFeeTravel2= 500000;
+                            }
+                        }
+                        else {
+                            shippingFeeTravel2 = 0;
+                        }
 
                         System.out.println("Available chair:");
                         mobil3.displayAvailableChairs();
@@ -173,19 +357,42 @@ public class MainTravel {
                         scanner.nextLine();
                         if (mobil3.isSeatAvailable(row, column)) {
                             mobil3.bookSeat(row, column);
-                            System.out.println("Kursi " + row + " " + column + " berhasil dipesan.");
+                            System.out.println("Chair " + row + " " + column + " is successfully booked.");
                         } else {
-                            System.out.println("Kursi " + row + " " + column + " sudah dipesan atau tidak valid.");
+                            System.out.println("Chair " + row + " " + column + " is reserved or invalid.");
                         }
 
                         System.out.print("Input pick up address: ");
                         String pickUpAddress = scanner.nextLine();
+                        double subTotalGuest = mobil3.getPrice();
+                        double subTotalTravel2;
+                        if(destination1.equals("Surabaya")){
+                            subTotalTravel2 = 150000;
+                        } else if (destination1.equals("Jogja")) {
+                            subTotalTravel2 = 250000;
+                        } else if (destination1.equals("Bali")) {
+                            subTotalTravel2 = 600000;
+                        } else if (destination1.equals("Solo")) {
+                            subTotalTravel2 = 230000;
+                        }
+                        else{
+                            subTotalTravel2 = 0;
+                        }
+                        double discountGuest = 0;
+                        double totalGuest = subTotalGuest + subTotalTravel2;
+                        double totalTravel2 = 0;
+                        Order order = new Order(rentDateGuest, totalGuest, shippingFeeTravel2, discountGuest, totalTravel2);
                         System.out.println("=".repeat(52));
                         System.out.println("Customer's name: " + tamu.getFullName());
                         System.out.println("Destination: " + destination1);
                         System.out.println("Pick up address: " + pickUpAddress);
-                        System.out.println("Car: " + mobil3.getBrand() + "\nNumber Plat: " + mobil3.getNumberPlat());
+                        System.out.println("Car: " + mobil3.getBrand() + "\nLisence Plat: " + mobil3.getNumberPlat());
                         System.out.println("Chair: " + row + " " + column);
+                        order.printDetails();
+                        System.out.println("=".repeat(52));
+                        order.checkOut();
+                        tamu.confirmPay(order.orderNumber);
+                        order.pay();
                     }
                 } else {
                     System.out.println("Thank you!");
