@@ -6,7 +6,7 @@ abstract class Promotion implements Applicable, Comparable<Promotion> {
     Date endDate;
 
     @Override
-    public boolean isCustomerEligible(Pelanggan customer) {
+    public boolean isCustomerEligible(Customer customer) {
         // Umur akun lebih dari 30 hari
         if (customer instanceof Guest) {
             return false; // Guest tidak berlaku
