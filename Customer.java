@@ -12,7 +12,7 @@ public abstract class Customer {
     }
     public abstract String getFullName();
 
-    abstract Order makeOrder(LocalDate orderDate, double subTotal, double shippingFee, double discount);
+    abstract Order makeOrder(LocalDate orderDate, double subTotal, double shippingFee, double discount, double total);
 
     abstract void confirmPay(int orderNumber);
 }
