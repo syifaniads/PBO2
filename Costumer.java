@@ -1,11 +1,11 @@
 import java.util.*;
-public abstract class Costumer {
+public abstract class Customer {
     protected String firstName;
     protected String lastName;
 //    protected String address;
 //    protected String phoneNumber;
 
-    public Costumer(String firstName, String lastName) {
+    public Customer(String firstName, String lastName) {
         this.firstName = firstName;
         this.lastName = lastName;
     }
