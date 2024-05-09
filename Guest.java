@@ -12,8 +12,8 @@ class Guest extends Customer {
     }
 
     @Override
-    Order makeOrder(LocalDate orderDate, double subTotal, double shippingFee, double discount) {
-        return new Order(orderDate, subTotal, shippingFee, discount);
+    Order makeOrder(LocalDate orderDate, double subTotal, double shippingFee, double discount, double total) {
+        return new Order(orderDate, subTotal, shippingFee, discount, total);
     }
 
     @Override
