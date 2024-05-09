@@ -10,13 +10,13 @@ public class Order {
         Status status;
         Promotion promotion;
 
-        public Order(LocalDate orderDate, double subTotal, double shippingFee, double discount) {
+        public Order(LocalDate orderDate, double subTotal, double shippingFee, double discount,double total) {
                 this.orderDate = orderDate;
 //                this.orderNumber = orderNumber;
                 this.subTotal = subTotal;
                 this.shippingFee = shippingFee;
                 this.discount = discount;
-                this.total = subTotal + shippingFee - discount;
+                this.total += subTotal + shippingFee - discount;
 //                this.vehicle = vehicle;
 //                this.quantity = quantity;
         }
@@ -49,18 +49,18 @@ public class Order {
                 }
         }
 
-        public double applyPromo(Promotion promo) {
-                this.promotion = promo;
-                try {
-                        this.discount = promo.calculateTotalDiscount(this);
-                        this.total = subTotal + shippingFee - discount;
-                }
-                catch (Exception e){
-                        System.out.println("Failed to use promo.");
-                        e.printStackTrace();
-                }
-                return 0;
-        }
+//        public double applyPromo(Promotion promo) {
+//                this.promotion = promo;
+//                try {
+//                        this.discount = promo.calculateTotalDiscount(this);
+//                        this.total = subTotal + shippingFee - discount;
+//                }
+//                catch (Exception e){
+//                        System.out.println("Failed to use promo.");
+//                        e.printStackTrace();
+//                }
+//                return 0;
+//        }
 
         public void pay() {
             if(status == Status.SUCCESSFUL){
