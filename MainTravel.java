@@ -8,13 +8,20 @@
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import java.util.Scanner;
+import java.util.*;
 
 public class MainTravel {
+    private static List<Member> members = new ArrayList<>();
+    private static List<Guest> guests = new ArrayList<>();
+
     public static void main(String[] args) {
         Scanner scanner = new Scanner(System.in);
         System.out.println("=".repeat(52));
         System.out.println("=".repeat(20) + "FILKOM TRAVEL" + "=".repeat(19));
         System.out.println("=".repeat(52));
+//        while(true){
+//
+//        }
         System.out.println("[Type 1] Sign in as member");
         System.out.println("[Type 2] Guest");
         System.out.print("Enter option: ");
@@ -47,8 +54,9 @@ public class MainTravel {
                     String[] fullname = name.split(" ");
                     String firstName = fullname[0];
                     String lastName = fullname.length > 1 ? fullname[1] : "";
-                    pelanggan = new Member(id, firstName, lastName, membershipDate, startBalance);
-                    System.out.println(pelanggan);
+                    members.add(new Member(id, firstName, lastName, membershipDate, startBalance));
+                    members = mergeSortMembers(members);
+                    System.out.println(members.get(members.size() - 1).toString());
                 }
                 else System.out.println("CREATE MEMBER FAILED: " + id + " IS EXISTS");
             }
@@ -57,6 +65,7 @@ public class MainTravel {
         else System.out.println("Invalid input. Please start with 'CREATE MEMBER '");
 
         System.out.println("=".repeat(52));
+        //daftar pilihan
         System.out.println("CONTINUE?");
         System.out.println("[Type 1] Yes");
         System.out.println("[Type 2] No");
@@ -289,7 +298,9 @@ public class MainTravel {
                 int startBalance = Integer.parseInt(part[1]);
                 if(!isGuestExist(id)) {
                     tamu = new Guest(id, startBalance);
-                    System.out.println(tamu);
+                    guests.add(tamu);
+                    guests = mergeSortGuests(guests);
+                    System.out.println(tamu.toString());
                 }
                 else System.out.println("CREATE GUEST FAILED:" + id + " IS EXISTS");
             }
@@ -480,12 +491,118 @@ public class MainTravel {
     }
 
     private static boolean isMemberExist(String id) {
-        //dummy apakah member udah ada di database belum gtw gmn kodenya
-        return false;
+        return binarySearchMember(id) != null;
     }
 
     public static boolean isGuestExist(String id) {
-        //dummy apakah guest udah ada di database belum gtw gmn kodenya
-        return false;
+        return binarySearchGuest(id) != null;
     }
+
+    private static Member binarySearchMember(String id) {
+        int left = 0, right = members.size() - 1;
+        while (left <= right) {
+            int mid = left + (right - left) / 2;
+            int cmp = members.get(mid).getId().compareTo(id);
+            if (cmp == 0) {
+                return members.get(mid);
+            } else if (cmp < 0) {
+                left = mid + 1;
+            } else {
+                right = mid - 1;
+            }
+        }
+        return null;
+    }
+
+    private static Guest binarySearchGuest(String id) {
+        int left = 0, right = guests.size() - 1;
+        while (left <= right) {
+            int mid = left + (right - left) / 2;
+            int cmp = guests.get(mid).getId().compareTo(id);
+            if (cmp == 0) {
+                return guests.get(mid);
+            } else if (cmp < 0) {
+                left = mid + 1;
+            } else {
+                right = mid - 1;
+            }
+        }
+        return null;
+    }
+    private static List<Member> mergeSortMembers(List<Member> list) {
+        if (list.size() <= 1) {
+            return list;
+        }
+
+        int mid = list.size() / 2;
+        List<Member> left = new ArrayList<>(list.subList(0, mid));
+        List<Member> right = new ArrayList<>(list.subList(mid, list.size()));
+
+        left = mergeSortMembers(left);
+        right = mergeSortMembers(right);
+
+        return mergeMembers(left, right);
+    }
+
+    private static List<Member> mergeMembers(List<Member> left, List<Member> right) {
+        List<Member> merged = new ArrayList<>();
+        int leftIndex = 0, rightIndex = 0;
+
+        while (leftIndex < left.size() && rightIndex < right.size()) {
+            if (left.get(leftIndex).getId().compareTo(right.get(rightIndex).getId()) <= 0) {
+                merged.add(left.get(leftIndex++));
+            } else {
+                merged.add(right.get(rightIndex++));
+            }
+        }
+
+        while (leftIndex < left.size()) {
+            merged.add(left.get(leftIndex++));
+        }
+
+        while (rightIndex < right.size()) {
+            merged.add(right.get(rightIndex++));
+        }
+
+        return merged;
+    }
+
+    private static List<Guest> mergeSortGuests(List<Guest> list) {
+        if (list.size() <= 1) {
+            return list;
+        }
+
+        int mid = list.size() / 2;
+        List<Guest> left = new ArrayList<>(list.subList(0, mid));
+        List<Guest> right = new ArrayList<>(list.subList(mid, list.size()));
+
+        left = mergeSortGuests(left);
+        right = mergeSortGuests(right);
+
+        return mergeGuests(left, right);
+    }
+
+    private static List<Guest> mergeGuests(List<Guest> left, List<Guest> right) {
+        List<Guest> merged = new ArrayList<>();
+        int leftIndex = 0, rightIndex = 0;
+
+        while (leftIndex < left.size() && rightIndex < right.size()) {
+            if (left.get(leftIndex).getId().compareTo(right.get(rightIndex).getId()) <= 0) {
+                merged.add(left.get(leftIndex++));
+            } else {
+                merged.add(right.get(rightIndex++));
+            }
+        }
+
+        while (leftIndex < left.size()) {
+            merged.add(left.get(leftIndex++));
+        }
+
+        while (rightIndex < right.size()) {
+            merged.add(right.get(rightIndex++));
+        }
+
+        return merged;
+    }
+
 }
