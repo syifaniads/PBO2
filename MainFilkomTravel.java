@@ -82,11 +82,9 @@ public class MainFilkomTravel {
                             System.out.println("Invalid option.");
                             break;
                     }
-//                    if (choice2 == 0) {
-//                        break;
-//                    }
                 }
-            } catch (Exception e) {
+            }
+            catch (Exception e) {
                 e.printStackTrace();
                 break;
             }
@@ -294,7 +292,7 @@ public class MainFilkomTravel {
         return merged;
     }
 
-    private static void rentVehicle (Scanner scanner) {
+    private static void rentVehicle(Scanner scanner) {
         //loop 3
         while (true) {
             System.out.println("=".repeat(52));
@@ -302,22 +300,28 @@ public class MainFilkomTravel {
             //list menu kendaraan
             // -> add to cart -> apply promo
 
-            System.out.println("List of Vehicles:");
-            for (Menu item : menu) {
-                System.out.println(item.IDMenu + " - " + item.NamaMenu + " (" + item.PlatNomor + ") - Rp" + item.Harga + " per day");
-            }
-            String input = scanner.nextLine();
-            processAddToCart(input);
-
-            System.out.println("[Type 1] Check Out");
+            System.out.println("[Type 1] Add to Cart");
             System.out.println("[Type 2] Delete Cart");
             System.out.println("[Type 0] Back");
             System.out.print("Enter option: ");
             int choice3 = scanner.nextInt();
             scanner.nextLine();
+
             switch (choice3) {
                 case 1:
-                    //check out -> cetak pesanan
+                    // add to cart
+                    System.out.println("List of Vehicles:");
+                    for (Menu item : menu) {
+                        System.out.println(item.IDMenu + " - " + item.NamaMenu + " (" + item.PlatNomor + ") - Rp" + item.Harga + " per day");
+                    }
+                    String inputCart = scanner.nextLine();
+                    processAddToCart(inputCart);
+
+                    //promo
+                    System.out.println("List of Available Promotions:");
+                    printPromoCodes();
+                    String inputPromo = scanner.nextLine();
+                    processApplyPromo(inputPromo);
                     break;
                 case 2:
                     //delete cart
@@ -506,33 +510,6 @@ public class MainFilkomTravel {
     }
 
     private static void processAddToCart(String input) {
-//        String[] parts = input.split(" ");
-//        String IDPemesanan = parts[1];
-//        String IDMenu = parts[2];
-//        int Qty = Integer.parseInt(parts[3]);
-//        String StartDate = parts[4];
-//
-//        Menu menuItem = null;
-//        for (Menu item : menu) {
-//            if (item.IDMenu.equals(IDMenu)) {
-//                menuItem = item;
-//                break;
-//            }
-//        }
-//
-//        if (menuItem == null || !customers.containsKey(IDPemesanan)) {
-//            System.out.println("ADD_TO_CART FAILED: NON EXISTENT CUSTOMER OR MENU");
-//            return;
-//        }
-//
-//        Customer customer = customers.get(IDPemesanan);
-//        boolean isNew = customer.addToCart(menuItem, Qty, StartDate);
-//        String dayOrDays = Qty > 1 ? "days" : "day";
-//        if (isNew) {
-//            System.out.println("ADD_TO_CART SUCCESS: " + Qty + " " + dayOrDays + " " + menuItem.NamaMenu + " " + menuItem.PlatNomor + " (NEW)");
-//        } else {
-//            System.out.println("ADD_TO_CART SUCCESS: " + Qty + " " + dayOrDays + " " + menuItem.NamaMenu + " " + menuItem.PlatNomor + " (UPDATED)");
-//        }
         String[] parts = input.split(" ");
         String IDPemesanan = parts[1];
         String IDMenu = parts[2];
@@ -562,6 +539,65 @@ public class MainFilkomTravel {
             System.out.println("ADD_TO_CART SUCCESS: " + Qty + " " + dayOrDays + " " + menuItem.NamaMenu + " " + menuItem.PlatNomor + " (NEW)");
         } else {
             System.out.println("ADD_TO_CART SUCCESS: " + Qty + " " + dayOrDays + " " + menuItem.NamaMenu + " " + menuItem.PlatNomor + " (UPDATED)");
+        }
+    }
+
+    private static void processApplyPromo(String input) {
+        String[] parts = input.split(" ");
+        String IDPemesan = parts[1];
+        String KodePromo = parts[2];
+        char userCategory = IDPemesan.charAt(0);
+        // Check apakah pengguna adalah anggota atau tamu
+        if (userCategory == 'A') {
+            Promotion promo = null;
+            for (Promotion p : promoList) {
+                if (p.getPromoCode().equals(KodePromo)) {
+                    promo = p;
+                    break;
+                }
+            }
+
+            Customer customer = customers.get(IDPemesan);
+            if (promo == null || customer == null) {
+                System.out.println("APPLY_PROMO FAILED: " + KodePromo);
+                return;
+            }
+
+            LocalDate currentDate = LocalDate.now();
+            if (currentDate.isBefore(promo.startDate) || currentDate.isAfter(promo.endDate)) {
+                System.out.println("APPLY_PROMO FAILED: " + KodePromo + " is EXPIRED");
+                return;
+            }
+
+            if (!promo.isCustomerEligible(customer)) {
+                System.out.println("APPLY_PROMO FAILED: " + KodePromo + " is not applicable for this customer");
+                return;
+            }
+
+            // Hitung diskon, cashback, atau potongan biaya pengiriman sesuai jenis promo
+            double totalDiscount = 0;
+            try {
+                totalDiscount = promo.calculateTotalDiscount(null); // Anda perlu menyesuaikan dengan parameter yang dibutuhkan
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+        }
+        else if (userCategory == 'G') {
+            // Tamu
+            System.out.println("APPLY_PROMO FAILED: Guests are not eligible to apply promo.");
+        }
+        else {
+            // ID pemesanan tidak valid
+            System.out.println("APPLY_PROMO FAILED: Invalid user ID.");
+        }
+    }
+
+    private static void printPromoCodes() {
+        if (promoList.isEmpty()) {
+            return; // Do nothing if the promo list is empty
+        }
+        for (Promotion promo : promoList) {
+            System.out.println(promo.getPromoCode());
         }
     }
 
