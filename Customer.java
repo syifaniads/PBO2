@@ -11,6 +11,7 @@ public abstract class Customer {
         this.lastName = lastName;
     }
     public abstract String getFullName();
+    public abstract boolean addToCart(Menu menuItem, int qty, String startDate);
 
     abstract Order makeOrder(LocalDate orderDate, LocalDate endDate, double subTotal, double shippingFee, double discount, double total);
 
