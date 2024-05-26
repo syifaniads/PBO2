@@ -1,9 +1,23 @@
-import java.util.Date;
+import java.time.LocalDate;
 
 abstract class Promotion implements Applicable, Comparable<Promotion> {
     String promoCode;
-    Date startDate;
-    Date endDate;
+    LocalDate startDate;
+    LocalDate endDate;
+    int percentPieces;
+    int maxPieces;
+    int minPurchase;
+    String promoType;
+
+    Promotion(String promoCode, LocalDate startDate, LocalDate endDate, int percentPieces, int maxPieces, int minPurchase, String promoType) {
+        this.promoCode = promoCode;
+        this.startDate = startDate;
+        this.endDate = endDate;
+        this.percentPieces = percentPieces;
+        this.maxPieces = maxPieces;
+        this.minPurchase = minPurchase;
+        this.promoType = promoType;
+    }
 
     @Override
     public boolean isCustomerEligible(Customer customer) {
@@ -34,5 +48,9 @@ abstract class Promotion implements Applicable, Comparable<Promotion> {
     public int compareTo(Promotion o) {
         // Implementasi perbandingan berdasarkan tanggal mulai
         return this.startDate.compareTo(o.startDate);
+    }
+
+    public String toString() {
+        return promoCode;
     }
 }
