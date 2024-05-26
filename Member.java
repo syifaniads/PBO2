@@ -1,17 +1,40 @@
 import java.time.LocalDate;
-import java.util.Date;
+import java.util.HashMap;
+import java.util.Map;
 
 class Member extends Customer {
+    private String id;
     private LocalDate membershipDate;
+    private int startBalance;
+    private Map<String, CartItem> cart = new HashMap<>();
 
-    public Member(String firstName, String lastName, LocalDate membershipDate) {
+    public Member(String id, String firstName, String lastName, LocalDate membershipDate, int balance) {
         super(firstName, lastName);
+        this.id = id;
         this.membershipDate = membershipDate;
+        this.startBalance = balance;
+    }
+
+    public String getId() {
+        return id;
     }
 
     @Override
     public String getFullName() {
         return firstName + " " + lastName;
+    }
+
+    @Override
+    public boolean addToCart(Menu menuItem, int qty, String startDate) {
+        String key = menuItem.IDMenu + startDate;
+        if (cart.containsKey(key)) {
+            CartItem cartItem = cart.get(key);
+            cartItem.qty += qty;
+            return false; // Updated
+        } else {
+            cart.put(key, new CartItem(menuItem, qty, startDate));
+            return true; // New
+        }
     }
 
     @Override
@@ -34,5 +57,8 @@ class Member extends Customer {
         long membershipDuration = membershipDate.until(today).getDays();
         return membershipDuration > 100;
     }
-}
 
+    public String toString() {
+        return "CREATE MEMBER SUCCESS:" + id + " " + getFullName();
+    }
+}
