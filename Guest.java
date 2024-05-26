@@ -6,9 +6,11 @@ class Guest extends Customer {
     private String id;
     private int startBalance;
     private Map<String, CartItem> cart = new HashMap<>();
+    private Map<Menu, Integer> cartCO;
+
 
     public Guest(String id, int balance) {
-        super("GUEST", "");
+        super("GUEST", "", balance);
         this.id = id;
         this.startBalance = balance;
     }
@@ -17,9 +19,22 @@ class Guest extends Customer {
         return id;
     }
 
+    public Map<Menu, Integer> getCart() {
+        return cartCO;
+    }
     @Override
     public String getFullName() {
         return "Guest";
+    }
+
+    @Override
+    public int getBalance() {
+        return startBalance;
+    }
+
+    @Override
+    public void topUp(int amount) {
+        startBalance += amount;
     }
 
     @Override
@@ -33,6 +48,24 @@ class Guest extends Customer {
             cart.put(key, new CartItem(menuItem, qty, startDate));
             return true; // New
         }
+    }
+
+    @Override
+    public boolean removeFromCart(Menu menuItem, int qty, String startDate) {
+        String key = menuItem.IDMenu + (startDate != null ? startDate : "");
+        if (!cart.containsKey(key)) {
+            return false;
+        }
+
+        CartItem cartItem = cart.get(key);
+        cartItem.qty -= qty;
+        if (cartItem.qty <= 0) {
+            cart.remove(key);
+            System.out.println("REMOVE_FROM_CART SUCCESS: " + cartItem.menuItem.NamaMenu + " IS REMOVED");
+        } else {
+            System.out.println("REMOVE_FROM_CART SUCCESS: " + cartItem.menuItem.NamaMenu + " QUANTITY IS DECREMENTED");
+        }
+        return true;
     }
 
     @Override
