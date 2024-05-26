@@ -1,3 +1,5 @@
+import java.time.LocalDate;
+
 public class FreeShippingPromo extends Promotion {
     double shippingFeeDiscount;
 //    @Override
@@ -6,6 +8,9 @@ public class FreeShippingPromo extends Promotion {
 //        return 0;
 //    }
 
+    FreeShippingPromo(String promoCode, LocalDate startDate, LocalDate endDate, int percentPieces, int maxPieces, int minPurchase, String promoType) {
+        super(promoCode, startDate, endDate, percentPieces, maxPieces, minPurchase, promoType);
+    }
     @Override
     public int compareTo(Promotion o) {
         return 0;
