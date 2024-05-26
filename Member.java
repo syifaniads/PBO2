@@ -7,12 +7,16 @@ class Member extends Customer {
     private LocalDate membershipDate;
     private int startBalance;
     private Map<String, CartItem> cart = new HashMap<>();
-
+    private Map<Menu, Integer> cartCO;
     public Member(String id, String firstName, String lastName, LocalDate membershipDate, int balance) {
-        super(firstName, lastName);
+        super(firstName, lastName, balance);
         this.id = id;
         this.membershipDate = membershipDate;
         this.startBalance = balance;
+    }
+
+    public Map<Menu, Integer> getCart() {
+        return cartCO;
     }
 
     public String getId() {
@@ -22,6 +26,16 @@ class Member extends Customer {
     @Override
     public String getFullName() {
         return firstName + " " + lastName;
+    }
+
+    @Override
+    public int getBalance() {
+        return startBalance;
+    }
+
+    @Override
+    public void topUp(int amount) {
+        startBalance += amount;
     }
 
     @Override
@@ -35,6 +49,24 @@ class Member extends Customer {
             cart.put(key, new CartItem(menuItem, qty, startDate));
             return true; // New
         }
+    }
+
+    @Override
+    public boolean removeFromCart(Menu menuItem, int qty, String startDate) {
+         String key = menuItem.IDMenu + (startDate != null ? startDate : "");
+         if (!cart.containsKey(key)) {
+             return false;
+         }
+
+         CartItem cartItem = cart.get(key);
+         cartItem.qty -= qty;
+         if (cartItem.qty <= 0) {
+             cart.remove(key);
+             System.out.println("REMOVE_FROM_CART SUCCESS: " + cartItem.menuItem.NamaMenu + " IS REMOVED");
+         } else {
+             System.out.println("REMOVE_FROM_CART SUCCESS: " + cartItem.menuItem.NamaMenu + " QUANTITY IS DECREMENTED");
+         }
+         return true;
     }
 
     @Override
