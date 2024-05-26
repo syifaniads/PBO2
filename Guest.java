@@ -1,14 +1,38 @@
 import java.time.LocalDate;
-import java.util.Date;
+import java.util.HashMap;
+import java.util.Map;
 
 class Guest extends Customer {
+    private String id;
+    private int startBalance;
+    private Map<String, CartItem> cart = new HashMap<>();
 
-    public Guest(String firstName, String lastName) {
-        super(firstName, lastName);
+    public Guest(String id, int balance) {
+        super("GUEST", "");
+        this.id = id;
+        this.startBalance = balance;
     }
+
+    public String getId() {
+        return id;
+    }
+
     @Override
     public String getFullName() {
-        return firstName + " " + lastName;
+        return "Guest";
+    }
+
+    @Override
+    public boolean addToCart(Menu menuItem, int qty, String startDate) {
+        String key = menuItem.IDMenu + startDate;
+        if (cart.containsKey(key)) {
+            CartItem cartItem = cart.get(key);
+            cartItem.qty += qty;
+            return false; // Updated
+        } else {
+            cart.put(key, new CartItem(menuItem, qty, startDate));
+            return true; // New
+        }
     }
 
     @Override
@@ -19,5 +43,9 @@ class Guest extends Customer {
     @Override
     void confirmPay(int orderNumber) {
         System.out.println("Confirmation of payment for order " + orderNumber + " as a guest.");
+    }
+
+    public String toString() {
+        return "CREATE GUEST SUCCESS: " + id;
     }
 }
