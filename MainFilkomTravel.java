@@ -20,7 +20,7 @@ public class MainFilkomTravel {
     public static void main(String[] args) {
         Scanner scanner = new Scanner(System.in);
 
-        //loop 1
+        //main loop (loop 1)
         while (true) {
             try {
                 System.out.println("=".repeat(52));
@@ -36,15 +36,15 @@ public class MainFilkomTravel {
                 switch (choice1) {
                     case 1:         //member
                         loginMember(scanner);
-                        break;
+                        continue;
                     case 2:         //guest
                         loginGuest(scanner);
-                        break;
+                        continue;
                     case 3:
                         loginAdmin(scanner);
-                        break;
+                        continue;
                     case 0:
-                        System.out.print("Thank You! :D");
+                        System.out.print("You've logged out of the program.");
                         break;
                     default:
                         System.out.println("Invalid option.");
@@ -66,22 +66,31 @@ public class MainFilkomTravel {
                     switch (choice2) {
                         case 1:
                             rentVehicle(scanner);
-                            break;
+                            continue;
                         case 2:
                             //lihat list pesanan
-                            break;
+                            continue;
                         case 3:
-                            //top up saldo
-                            break;
+                            //top up balance
+                            String topUpInput = scanner.nextLine();
+                            if (topUpInput.startsWith("TOPUP")) {
+                                processTopUp(topUpInput);
+                            }
+                            continue;
                         case 4:
                             //cek saldo
-                            break;
+                            String balanceInput = scanner.nextLine();
+                            if (balanceInput.startsWith("VIEW_BALANCE")) {
+                                processViewBalance(balanceInput);
+                            }
+                            continue;
                         case 0:
                             return;
                         default:
                             System.out.println("Invalid option.");
                             break;
                     }
+                    return;
                 }
             }
             catch (Exception e) {
@@ -110,24 +119,21 @@ public class MainFilkomTravel {
                         if (inputPromo.startsWith("CREATE PROMO")) {
                             processCreatePromo(inputPromo, scanner);
                         }
-                        break;
+                        continue;
                     case 2:
                         //create menu
                         String inputMenu = scanner.nextLine();
                         if (inputMenu.startsWith("CREATE MENU")) {
                             processCreateMenu(inputMenu);
                         }
-//                        else if (input.equalsIgnoreCase("EXIT")) {
-//                            break;
-//                        }
-                        break;
+                        continue;
                     case 0:
-                        return; // Kembali ke looping utama di main
+                        continue; // Kembali ke looping utama di main
                     default:
                         System.out.println("Invalid option.");
                         break;
                 }
-                continue;
+                return;
             }
         }
         else System.out.println("Invalid password.");
@@ -315,7 +321,9 @@ public class MainFilkomTravel {
                         System.out.println(item.IDMenu + " - " + item.NamaMenu + " (" + item.PlatNomor + ") - Rp" + item.Harga + " per day");
                     }
                     String inputCart = scanner.nextLine();
-                    processAddToCart(inputCart);
+                    if (inputCart.startsWith("ADD_TO_CART")) {
+                        processAddToCart(inputCart);
+                    }
 
                     //promo
                     System.out.println("List of Available Promotions:");
@@ -325,6 +333,10 @@ public class MainFilkomTravel {
                     break;
                 case 2:
                     //delete cart
+                    String inputDelete = scanner.nextLine();
+                    if (inputDelete.startsWith("REMOVE_FROM_CART")) {
+                        processRemoveFromCart(inputDelete);
+                    }
                     break;
                 case 0:
                     return;
@@ -367,10 +379,6 @@ public class MainFilkomTravel {
         menu.add(newItem);
         menu = mergeSort(menu);
         System.out.println("CREATE MENU SUCCESS: " + IDMenu + " " + NamaMenu + " " + PlatNomor);
-//        if (CustomType != null) {
-//            System.out.print(" ");
-//        }
-//        System.out.println();
     }
 
     private static List<Menu> mergeSort(List<Menu> list) {
@@ -599,6 +607,58 @@ public class MainFilkomTravel {
         for (Promotion promo : promoList) {
             System.out.println(promo.getPromoCode());
         }
+    }
+
+    private static void processRemoveFromCart(String input) {
+         String[] parts = input.split(" ");
+         String IDPemesanan = parts[1];
+         String IDMenu = parts[2];
+         int Qty = Integer.parseInt(parts[3]);
+         String StartDate = parts.length > 4 ? parts[4] : null;
+
+         Customer customer = customers.get(IDPemesanan);
+         if (customer == null) {
+             System.out.println("REMOVE_FROM_CART FAILED: NON EXISTENT CUSTOMER OR MENU");
+             return;
+         }
+
+         Menu menuItem = binarySearchMenu(IDMenu);
+         boolean removed = customer.removeFromCart(menuItem, Qty, StartDate);
+         if (!removed) {
+             System.out.println("REMOVE_FROM_CART FAILED: NON EXISTENT CUSTOMER OR MENU");
+         }
+    }
+
+    private static void processTopUp(String input) {
+        String[] parts = input.split(" ");
+        String IDPemesanan = parts[1];
+        int topUpAmount = Integer.parseInt(parts[2]);
+
+        Customer customer = customers.get(IDPemesanan);
+        if (customer == null) {
+            System.out.println("TOPUP FAILED: NON EXISTENT CUSTOMER");
+            return;
+        }
+
+        int saldoAwal = customer.getBalance();
+        customer.topUp(topUpAmount);
+        int saldoAkhir = customer.getBalance();
+
+        System.out.println("TOPUP SUCCESS: " + customer.getFullName() + " " + saldoAwal + " => " + saldoAkhir);
+    }
+
+    private static void processViewBalance(String input) {
+        String[] parts = input.split(" ");
+        String IDPemesanan = parts[2];
+
+        Customer customer = customers.get(IDPemesanan);
+        if (customer == null) {
+            System.out.println("VIEW BALANCE FAILED: NON EXISTENT CUSTOMER");
+            return;
+        }
+
+        int saldo = customer.getBalance();
+        System.out.println("CURRENT BALANCE: " + customer.getFullName() + " " + saldo);
     }
 
 }
