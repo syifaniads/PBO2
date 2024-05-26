@@ -1,3 +1,5 @@
+import java.time.LocalDate;
+
 public class PercentOffPromo extends Promotion {
     double cashback;
 //    @Override
@@ -6,6 +8,9 @@ public class PercentOffPromo extends Promotion {
 //        return 0;
 //    }
 
+    PercentOffPromo(String promoCode, LocalDate startDate, LocalDate endDate, int percentPieces, int maxPieces, int minPurchase, String promoType) {
+        super(promoCode, startDate, endDate, percentPieces, maxPieces, minPurchase, promoType);
+    }
     @Override
     public int compareTo(Promotion o) {
         return 0;
