@@ -1,9 +1,15 @@
+import java.time.LocalDate;
+
 class CashbackPromo extends Promotion {
 //    @Override
 //    double calculateDiscount(Order order) {
 //        // hitung cashback
 //        return 0;
 //    }
+
+    CashbackPromo(String promoCode, LocalDate startDate, LocalDate endDate, int percentPieces, int maxPieces, int minPurchase, String promoType) {
+        super(promoCode, startDate, endDate, percentPieces, maxPieces, minPurchase, promoType);
+    }
 
     @Override
     public int compareTo(Promotion o) {
