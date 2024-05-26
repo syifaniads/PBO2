@@ -19,10 +19,9 @@ public class MainFilkomTravel {
 
     public static void main(String[] args) {
         Scanner scanner = new Scanner(System.in);
-
         //main loop (loop 1)
         while (true) {
-            try {
+//            try {
                 System.out.println("=".repeat(52));
                 System.out.println("=".repeat(20) + "FILKOM TRAVEL" + "=".repeat(19));
                 System.out.println("=".repeat(52));
@@ -36,7 +35,7 @@ public class MainFilkomTravel {
                 switch (choice1) {
                     case 1:         //member
                         loginMember(scanner);
-                        continue;
+                        break;
                     case 2:         //guest
                         loginGuest(scanner);
                         continue;
@@ -84,22 +83,23 @@ public class MainFilkomTravel {
                                 processViewBalance(balanceInput);
                             }
                             continue;
-                        case 0:
-                            return;
+//                        case 0:
+//                            System.exit(0);
+//                            break;
                         default:
-                            System.out.println("Invalid option.");
+//                            System.out.println("Invalid option.");
                             break;
                     }
-                    return;
+                    break;
                 }
-            }
-            catch (Exception e) {
-                e.printStackTrace();
-                break;
-            }
+//            }
+//            catch (Exception e) {
+//                e.printStackTrace();
+//                continue;
+//            }
 
         }
-        scanner.close();
+//        scanner.close();
     }
 
 
@@ -142,7 +142,7 @@ public class MainFilkomTravel {
         String input = scanner.nextLine();
         Member pelanggan = null;
         if (input.startsWith("CREATE MEMBER ")) {
-            String[] part = input.substring(13).split("\\|");
+            String[] part = input.substring(14).split("\\|");
             if (part.length == 4) {
                 String id = part[0];
                 String name = part[1];
@@ -153,9 +153,12 @@ public class MainFilkomTravel {
                     String[] fullname = name.split(" ");
                     String firstName = fullname[0];
                     String lastName = fullname.length > 1 ? fullname[1] : "";
-                    members.add(new Member(id, firstName, lastName, membershipDate, startBalance));
+                    Member newMember = new Member(id, firstName, lastName, membershipDate, startBalance);
+                    members.add(newMember);
                     members = mergeSortMembers(members);
-                    System.out.println(members.get(members.size() - 1).toString());
+                    customers.put(id, newMember);
+                    System.out.println(newMember.toString());
+//                    System.out.println(members.get(members.size() - 1).toString());
                 }
                 else System.out.println("CREATE MEMBER FAILED: " + id + " IS EXISTS");
             }
@@ -176,6 +179,7 @@ public class MainFilkomTravel {
                     tamu = new Guest(id, startBalance);
                     guests.add(tamu);
                     guests = mergeSortGuests(guests);
+                    customers.put(id, tamu);
                     System.out.println(tamu.toString());
                 } else System.out.println("CREATE GUEST FAILED:" + id + " IS EXISTS");
             } else System.out.println("Invalid input format. Please use: CREATE GUEST IDTamu|SaldoAwal");
@@ -304,8 +308,7 @@ public class MainFilkomTravel {
             System.out.println("=".repeat(52));
 
             //list menu kendaraan
-            // -> add to cart -> apply promo
-
+            // -> add to cart -> apply promo -> check out -> cetak pesanan
             System.out.println("[Type 1] Add to Cart");
             System.out.println("[Type 2] Delete Cart");
             System.out.println("[Type 0] Back");
@@ -330,6 +333,12 @@ public class MainFilkomTravel {
                     printPromoCodes();
                     String inputPromo = scanner.nextLine();
                     processApplyPromo(inputPromo);
+
+                    //check out
+                    String checkoutInput = scanner.nextLine();
+                    if (checkoutInput.startsWith("CHECK_OUT")) {
+                        processCheckout(checkoutInput, scanner);
+                    }
                     break;
                 case 2:
                     //delete cart
@@ -550,6 +559,7 @@ public class MainFilkomTravel {
         }
     }
 
+
     private static void processApplyPromo(String input) {
         String[] parts = input.split(" ");
         String IDPemesan = parts[1];
@@ -661,4 +671,69 @@ public class MainFilkomTravel {
         System.out.println("CURRENT BALANCE: " + customer.getFullName() + " " + saldo);
     }
 
+    private static void processCheckout(String input, Scanner scanner) {
+        String[] parts = input.split(" ");
+        String IDPemesan = parts[1];
+
+        Customer customer = customers.get(IDPemesan);
+        if (customer == null) {
+            System.out.println("CHECK_OUT FAILED: NON EXISTENT CUSTOMER");
+            return;
+        }
+
+        double subTotal = 0;
+        for (Map.Entry<Menu, Integer> entry : customer.getCart().entrySet()) {
+            Menu menuItem = entry.getKey();
+            int qty = entry.getValue();
+            subTotal += menuItem.Harga * qty;
+        }
+
+        // Pertanyaan untuk biaya pengiriman kendaraan
+        System.out.println("Need Vehicle Shipping Cost to your address? ");
+        System.out.println("[Type 1] Yes, Deliver the Vehicle to my address");
+        System.out.println("[Type 2] No, Pick up myself");
+        System.out.print("Enter option: ");
+        int serviceOption = scanner.nextInt();
+        scanner.nextLine();
+
+        double shippingCost = 0;
+        if (serviceOption == 1) {
+            System.out.println("[Type 1] Rent Car");
+            System.out.println("[Type 2] Rent Motorcycle");
+            System.out.print("Enter option: ");
+            int choiceTypeVehicle = scanner.nextInt();
+            scanner.nextLine();
+            System.out.print("Enter range (in km): ");
+            int range = scanner.nextInt();
+            scanner.nextLine();
+            if (choiceTypeVehicle == 1) {
+                if (range <= 10) shippingCost = 20000;
+                else if (range > 10 && range <= 20) shippingCost = 40000;
+                else if (range > 20 && range <= 30) shippingCost = 60000;
+                else if (range > 30) shippingCost = 80000;
+            } else if (choiceTypeVehicle == 2) {
+                if (range <= 10) shippingCost = 10000;
+                else if (range > 10 && range <= 20) shippingCost = 20000;
+                else if (range > 20 && range <= 30) shippingCost = 40000;
+                else if (range > 30) shippingCost = 60000;
+            }
+        } else {
+            shippingCost = 0;
+        }
+
+        double discount = 0; // Implementasikan penghitungan diskon jika ada
+        double total = subTotal + shippingCost - discount;
+
+        if (customer.getBalance() >= total) {
+            // Checkout berhasil
+            Order order = customer.makeOrder(LocalDate.now(), LocalDate.now().plusDays(1), subTotal, shippingCost, discount, total);
+            customer.balance -= total;
+            customer.getCart().clear();
+            System.out.println("CHECK_OUT SUCCESS: " + IDPemesan + " " + customer.getFullName());
+        }
+        else {
+            // Saldo tidak mencukupi
+            System.out.println("CHECK_OUT FAILED: " + IDPemesan + " " + customer.getFullName() + " INSUFFICIENT BALANCE");
+        }
+    }
 }
