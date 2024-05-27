@@ -682,10 +682,10 @@ public class MainFilkomTravel {
         }
 
         double subTotal = 0;
-        for (Map.Entry<Menu, Integer> entry : customer.getCart().entrySet()) {
+        for (Map.Entry<Menu, CartItem> entry : customer.getCart().entrySet()) {
             Menu menuItem = entry.getKey();
-            int qty = entry.getValue();
-            subTotal += menuItem.Harga * qty;
+            CartItem cartItem = entry.getValue();
+            subTotal += menuItem.Harga * cartItem.qty;
         }
 
         // Pertanyaan untuk biaya pengiriman kendaraan
