@@ -331,14 +331,38 @@ public class MainFilkomTravel {
                     //promo
                     System.out.println("List of Available Promotions:");
                     printPromoCodes();
+                    System.out.println("=========Apply Promo=========");
                     String inputPromo = scanner.nextLine();
                     processApplyPromo(inputPromo);
 
                     //check out
+                    System.out.println("=========Check Out==========");
                     String checkoutInput = scanner.nextLine();
                     if (checkoutInput.startsWith("CHECK_OUT")) {
                         processCheckout(checkoutInput, scanner);
                     }
+
+                    System.out.println("=========Print Order=========");
+                    while (scanner.hasNextLine()) {
+                        String input = scanner.nextLine();
+                        String[] parts = input.split(" ");
+
+                        if (parts.length != 2 || !parts[0].equals("PRINT")) {
+                            System.out.println("Invalid command");
+                            continue;
+                        }
+
+                        String customerId = parts[1];
+                        if (!customers.containsKey(customerId)) {
+                            System.out.println("PRINT FAILED: NON EXISTENT CUSTOMER");
+                            continue;
+                        }
+
+                        Customer customer = customers.get(customerId);
+                        customer.printOrder();
+                    }
+                    scanner.close();
+
                     break;
                 case 2:
                     //delete cart
