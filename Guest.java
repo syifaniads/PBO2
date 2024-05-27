@@ -5,23 +5,27 @@ import java.util.Map;
 class Guest extends Customer {
     private String id;
     private int startBalance;
-    private Map<String, CartItem> cart = new HashMap<>();
-    private Map<Menu, Integer> cartCO;
-
+    private Map<String, CartItem> cart;
 
     public Guest(String id, int balance) {
-        super("GUEST", "", balance);
+        super(id, "GUEST", "", balance);
         this.id = id;
         this.startBalance = balance;
+        this.cart = new HashMap<>();
     }
 
     public String getId() {
         return id;
     }
 
-    public Map<Menu, Integer> getCart() {
+    public Map<Menu, CartItem> getCart() {
+        Map<Menu, CartItem> cartCO = new HashMap<>();
+        for (CartItem cartItem : cart.values()) {
+            cartCO.put(cartItem.menuItem, cartItem);
+        }
         return cartCO;
     }
+
     @Override
     public String getFullName() {
         return "Guest";
